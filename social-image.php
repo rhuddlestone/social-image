@@ -21,7 +21,7 @@ if (!defined('WPINC')) {
 define('SOCIAL_IMAGE_VERSION', '1.0.0');
 define('SOCIAL_IMAGE_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('SOCIAL_IMAGE_PLUGIN_URL', plugin_dir_url(__FILE__));
-define('SOCIAL_IMAGE_GITHUB_USERNAME', 'your-github-username'); // Change this to your GitHub username
+define('SOCIAL_IMAGE_GITHUB_USERNAME', 'rhuddlestone'); // GitHub username for auto-updates
 define('SOCIAL_IMAGE_GITHUB_REPO', 'social-image'); // Change this to your GitHub repo name
 
 /**

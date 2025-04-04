@@ -1,0 +1,43 @@
+# GitHub Repository Setup Instructions
+
+After creating your GitHub repository, run the following commands to push your local repository:
+
+```bash
+# Using your GitHub username (rhuddlestone)
+git remote add origin https://github.com/rhuddlestone/social-image.git
+git branch -M main
+git push -u origin main
+```
+
+## Creating a Release for Auto-Updates
+
+To enable auto-updates, create a release on GitHub:
+
+1. Go to your repository on GitHub
+2. Click on "Releases" in the right sidebar
+3. Click "Create a new release"
+4. Set the tag version to "v1.0.0" (matching your plugin version)
+5. Set the release title to "Social Image 1.0.0"
+6. Add release notes (you can copy from the Changelog section in README.md)
+7. Optionally, create a ZIP file of your plugin and attach it to the release
+8. Click "Publish release"
+
+## Updating the Plugin Configuration
+
+Before pushing to GitHub, make sure to update these values in social-image.php:
+
+```php
+define('SOCIAL_IMAGE_GITHUB_USERNAME', 'rhuddlestone'); // Already set to your GitHub username
+define('SOCIAL_IMAGE_GITHUB_REPO', 'social-image'); // This should be correct already
+```
+
+## Testing Auto-Updates
+
+To test the auto-update functionality:
+
+1. Install the plugin on a WordPress site
+2. Make changes to the plugin code
+3. Update the version number in social-image.php
+4. Commit and push the changes to GitHub
+5. Create a new release with the updated version number
+6. Check your WordPress site for the update notification
