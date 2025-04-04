@@ -3,7 +3,7 @@
  * Plugin Name: Social Image
  * Plugin URI: https://example.com/social-image
  * Description: Generate Pinterest pin images using templates directly from the WordPress editor.
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author: Your Name
  * Author URI: https://example.com
  * Text Domain: social-image
@@ -18,7 +18,7 @@ if (!defined('WPINC')) {
 }
 
 // Define plugin constants
-define('SOCIAL_IMAGE_VERSION', '1.0.0');
+define('SOCIAL_IMAGE_VERSION', '1.0.1');
 define('SOCIAL_IMAGE_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('SOCIAL_IMAGE_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('SOCIAL_IMAGE_GITHUB_USERNAME', 'rhuddlestone'); // GitHub username for auto-updates

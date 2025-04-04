@@ -27,42 +27,63 @@ class Social_Image_Generator {
      */
     public function ajax_generate_preview() {
         try {
+            // Debug: Log function entry
+            error_log('AJAX: Entering ajax_generate_preview');
+            
             // Check nonce for security
+            error_log('AJAX: Checking nonce');
             check_ajax_referer('social_image_nonce', 'nonce');
 
             // Check user capabilities
+            error_log('AJAX: Checking user capabilities');
             if (!current_user_can('edit_posts')) {
+                error_log('AJAX: User does not have edit_posts capability');
                 wp_send_json_error(array('message' => __('You do not have permission to perform this action.', 'social-image')));
             }
 
             // Get template data
+            error_log('AJAX: Getting template data from POST');
             $template_data = isset($_POST['template_data']) ? json_decode(stripslashes($_POST['template_data']), true) : array();
 
             // Debug: Log template data
             error_log('Template data: ' . print_r($template_data, true));
 
             if (empty($template_data)) {
+                error_log('AJAX: No template data provided');
                 wp_send_json_error(array('message' => __('No template data provided.', 'social-image')));
             }
 
             // Check if GD or Imagick is available
+            error_log('AJAX: Checking for image processing libraries');
+            if (!function_exists('imagecreatetruecolor')) {
+                error_log('AJAX: GD library function imagecreatetruecolor not available');
+            }
+            if (!class_exists('Imagick')) {
+                error_log('AJAX: Imagick class not available');
+            }
+            
             if (!function_exists('imagecreatetruecolor') && !class_exists('Imagick')) {
+                error_log('AJAX: No image processing libraries available');
                 wp_send_json_error(array('message' => __('Image processing libraries (GD or Imagick) are not available.', 'social-image')));
             }
 
             // Generate the preview image
+            error_log('AJAX: Calling generate_image');
             $image_url = $this->generate_image($template_data, true);
 
             if ($image_url) {
+                error_log('AJAX: Image generated successfully: ' . $image_url);
                 wp_send_json_success(array(
                     'image_url' => $image_url
                 ));
             } else {
-                wp_send_json_error(array('message' => __('Error generating preview image.', 'social-image')));
+                error_log('AJAX: Failed to generate image');
+                wp_send_json_error(array('message' => __('Error generating preview image. Check server error logs for details.', 'social-image')));
             }
         } catch (Exception $e) {
             // Log the error
             error_log('Social Image preview generation error: ' . $e->getMessage());
+            error_log('Error trace: ' . $e->getTraceAsString());
             wp_send_json_error(array('message' => __('Error generating preview image: ', 'social-image') . $e->getMessage()));
         }
     }
@@ -248,13 +269,40 @@ class Social_Image_Generator {
                 $element_x = ($element['position_x'] / 100) * $width;
                 $element_y = ($element['position_y'] / 100) * $height;
 
-                // Use a default font (this should be improved in a real plugin)
-                $font_path = SOCIAL_IMAGE_PLUGIN_DIR . 'assets/fonts/OpenSans-Regular.ttf';
-                if (!file_exists($font_path)) {
-                    error_log('Font file not found: ' . $font_path);
-                    $font_path = null; // Use built-in font if custom font is not available
-                } else {
+                // Try to use a system font that we know exists on Mac
+                $system_fonts = [
+                    '/System/Library/Fonts/Helvetica.ttc',
+                    '/System/Library/Fonts/Times.ttc',
+                    '/System/Library/Fonts/Supplemental/Arial.ttf',
+                    '/System/Library/Fonts/Supplemental/Courier New.ttf',
+                    '/System/Library/Fonts/Supplemental/Times New Roman.ttf',
+                    SOCIAL_IMAGE_PLUGIN_DIR . 'assets/fonts/OpenSans-Regular.ttf' // Try our font as last resort
+                ];
+                
+                $font_path = null;
+                foreach ($system_fonts as $test_font) {
+                    error_log('Testing font: ' . $test_font);
+                    if (file_exists($test_font)) {
+                        error_log('Font file exists: ' . $test_font . ', size: ' . filesize($test_font) . ' bytes');
+                        
+                        // Verify the font file is valid
+                        $test_bbox = @imagettfbbox(12, 0, $test_font, 'Test');
+                        if ($test_bbox !== false) {
+                            error_log('Font validated successfully: ' . $test_font);
+                            $font_path = $test_font;
+                            break;
+                        } else {
+                            error_log('Font exists but failed validation: ' . $test_font);
+                        }
+                    } else {
+                        error_log('Font file not found: ' . $test_font);
+                    }
+                }
+                
+                if ($font_path) {
                     error_log('Using font: ' . $font_path);
+                } else {
+                    error_log('No valid fonts found, will use built-in font');
                 }
 
                 // Wrap text to fit within the element width
