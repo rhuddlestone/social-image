@@ -1,0 +1,155 @@
+/**
+ * Social Image Template Editor CSS
+ */
+
+/* Template Editor Container */
+.social-image-template-editor {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 20px 0;
+}
+
+.template-editor-form {
+    flex: 0 0 60%;
+    padding-right: 20px;
+}
+
+.template-preview {
+    flex: 0 0 40%;
+}
+
+/* Form Fields */
+.form-field {
+    margin-bottom: 20px;
+}
+
+.form-field label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-field input[type="text"],
+.form-field input[type="number"],
+.form-field select,
+.form-field textarea {
+    width: 100%;
+}
+
+.size-inputs {
+    display: flex;
+    align-items: center;
+}
+
+.size-inputs input {
+    width: 80px;
+}
+
+.size-inputs span {
+    margin: 0 10px;
+}
+
+/* Media Field */
+.media-field {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+}
+
+.upload-image-button {
+    margin-right: 10px;
+}
+
+.image-preview {
+    margin-top: 10px;
+    max-width: 200px;
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    padding: 5px;
+}
+
+.image-preview img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Elements Container */
+.elements-container {
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    background-color: #f8f8f8;
+    padding: 15px;
+}
+
+/* Element Item */
+.element-item {
+    margin-bottom: 15px;
+    padding: 15px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    position: relative;
+}
+
+.element-item h4 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #eee;
+}
+
+.element-item .form-field {
+    margin-bottom: 15px;
+}
+
+.element-item .range-value {
+    display: inline-block;
+    width: 40px;
+    text-align: right;
+    margin-left: 10px;
+}
+
+.remove-element {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+/* Preview Container */
+.preview-container {
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    padding: 20px;
+    text-align: center;
+    min-height: 300px;
+}
+
+.preview-container img {
+    max-width: 100%;
+    height: auto;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Form Actions */
+.form-actions {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #ddd;
+}
+
+/* Responsive Adjustments */
+@media screen and (max-width: 782px) {
+    .social-image-template-editor {
+        flex-direction: column;
+    }
+    
+    .template-editor-form,
+    .template-preview {
+        flex: 0 0 100%;
+        padding-right: 0;
+    }
+    
+    .template-preview {
+        margin-top: 20px;
+    }
+}
