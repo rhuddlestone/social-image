@@ -77,26 +77,37 @@ class Social_Image_Template_Editor {
      * AJAX handler for getting template data
      */
     public function ajax_get_template() {
-        // Check nonce for security
-        check_ajax_referer('social_image_nonce', 'nonce');
+        try {
+            error_log('AJAX: Getting template data');
 
-        // Check user capabilities
-        if (!current_user_can('manage_options')) {
-            wp_send_json_error(array('message' => __('You do not have permission to perform this action.', 'social-image')));
-        }
+            // Check nonce for security
+            check_ajax_referer('social_image_nonce', 'nonce');
 
-        // Get template ID
-        $template_id = isset($_POST['template_id']) ? sanitize_text_field($_POST['template_id']) : '';
+            // Check user capabilities
+            if (!current_user_can('manage_options')) {
+                error_log('AJAX: User does not have permission');
+                wp_send_json_error(array('message' => __('You do not have permission to perform this action.', 'social-image')));
+            }
 
-        // Get template data
-        $template = $this->get_template($template_id);
+            // Get template ID
+            $template_id = isset($_POST['template_id']) ? sanitize_text_field($_POST['template_id']) : '';
+            error_log('AJAX: Getting template with ID: ' . $template_id);
 
-        if ($template) {
-            wp_send_json_success(array(
-                'template' => $template
-            ));
-        } else {
-            wp_send_json_error(array('message' => __('Template not found.', 'social-image')));
+            // Get template data
+            $template = $this->get_template($template_id);
+
+            if ($template) {
+                error_log('AJAX: Template found, sending success response');
+                wp_send_json_success(array(
+                    'template' => $template
+                ));
+            } else {
+                error_log('AJAX: Template not found');
+                wp_send_json_error(array('message' => __('Template not found.', 'social-image')));
+            }
+        } catch (Exception $e) {
+            error_log('AJAX error in get_template: ' . $e->getMessage());
+            wp_send_json_error(array('message' => __('Error getting template: ', 'social-image') . $e->getMessage()));
         }
     }
 
